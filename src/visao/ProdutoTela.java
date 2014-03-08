@@ -1,0 +1,579 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/*
+ * ProdutoTela.java
+ *
+ * Created on 07/12/2010, 19:05:22
+ */
+package visao;
+
+import controle.GrupoControle;
+import controle.ProdutoControle;
+import entidades.Grupo;
+import entidades.Produto;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Iterator;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.RowSorter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+/**
+ *
+ * @author DANILO
+ */
+public class ProdutoTela extends javax.swing.JFrame {
+
+    private Produto objeto;
+    private ProdutoControle controle;
+    private GrupoControle gruControle;
+    private List<Produto> lista;
+    private List<Grupo> grupos;
+
+    /** Creates new form ProdutoTela */
+    public void botoes(String acao) {
+        if (acao.equals("selecionado")) {
+            fProduto.setEnabled(false);
+            fValor.setEnabled(false);
+            fQnt.setEnabled(false);
+            fDescricao.setEnabled(false);
+            btNovo.setEnabled(true);
+            btAlterar.setEnabled(true);
+            cGrupo.setEnabled(false);
+            btExcluir.setEnabled(true);
+            btSalvar.setEnabled(false);
+            btCancelar.setEnabled(false);
+            btSair.setEnabled(true);
+            tabela.setEnabled(true);
+        } else if (acao.equals("novo") || acao.equals("alterar")) {
+            fProduto.setEnabled(true);
+            fValor.setEnabled(true);
+            fQnt.setEnabled(true);
+            fDescricao.setEnabled(true);
+            btNovo.setEnabled(false);
+            btAlterar.setEnabled(false);
+            cGrupo.setEnabled(true);
+            btExcluir.setEnabled(false);
+            btSalvar.setEnabled(true);
+            btCancelar.setEnabled(true);
+            btSair.setEnabled(false);
+            tabela.setEnabled(false);
+
+
+        } else if (acao.equals("inicio") || acao.equals("cancelar") || acao.equals("salvar")) {
+            fProduto.setEnabled(false);
+            fValor.setEnabled(false);
+            fQnt.setEnabled(false);
+            fDescricao.setEnabled(false);
+            btNovo.setEnabled(true);
+            btAlterar.setEnabled(false);
+            cGrupo.setEnabled(false);
+            btExcluir.setEnabled(false);
+            btSalvar.setEnabled(false);
+            btCancelar.setEnabled(false);
+            btSair.setEnabled(true);
+            tabela.setEnabled(true);
+
+        }
+
+    }
+
+    public boolean verificaCampos() {
+        if (fProduto.getText().equals("") || fProduto.getText().equals(null)) {
+            JOptionPane.showMessageDialog(null, "O campo Produto deve ser preenchido", "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            fProduto.requestFocus();
+            return false;
+        } else if (cGrupo.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(null, "O campo grupo deve ser preechido!", "Atenção",
+                    JOptionPane.WARNING_MESSAGE);
+            cGrupo.requestFocus();
+            return false;
+
+
+        } else {
+            return true;
+        }
+
+    }
+
+    public void montaTabela() {
+        lista = controle.montaLista(cOpcao.getSelectedIndex(), fFiltro.getText());
+         DefaultTableModel modelo = new DefaultTableModel(){
+        @Override
+        public boolean isCellEditable(int rowIndex, int mColIndex){
+        return false;
+        }
+
+        };
+
+        modelo.addColumn("Produto");
+        modelo.addColumn("Descrição");
+        modelo.addColumn("Valor");
+        modelo.addColumn("Quantidade");
+        for (Iterator<Produto> it = lista.iterator(); it.hasNext();) {
+            Produto produto = it.next();
+            modelo.addRow(new Object[]{produto.getNomeProduto(), produto.getDescricao(), produto.getValor(),
+                        produto.getQntprod()});
+        }
+        RowSorter<TableModel> sorter = new TableRowSorter<TableModel>(modelo);
+        tabela.setModel(modelo);
+        tabela.setRowSorter(sorter);
+        tabela.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    public Produto getObjeto() {
+        return objeto;
+    }
+
+    public void setObjeto(Produto objeto) {
+        this.objeto = objeto;
+    }
+
+    public ProdutoTela() {
+        initComponents();
+        controle = ProdutoControle.getInstance();
+        gruControle = gruControle.getInstance();
+        montaTabela();
+        limpaCombos();
+        montaComboGrupo();
+        botoes("inicio");
+
+    }
+
+    public void limpaCombos() {
+        cGrupo.setSelectedItem(null);
+
+    }
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        fId = new javax.swing.JTextField();
+        fProduto = new javax.swing.JTextField();
+        fDescricao = new javax.swing.JTextField();
+        fValor = new util.JMoneyField();
+        fQnt = new javax.swing.JTextField();
+        cGrupo = new javax.swing.JComboBox();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        fFiltro = new javax.swing.JTextField();
+        cOpcao = new javax.swing.JComboBox();
+        btFiltrar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabela = new javax.swing.JTable();
+        btNovo = new javax.swing.JButton();
+        btAlterar = new javax.swing.JButton();
+        btExcluir = new javax.swing.JButton();
+        btSalvar = new javax.swing.JButton();
+        btCancelar = new javax.swing.JButton();
+        btSair = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 255))); // NOI18N
+
+        jLabel1.setText("Código");
+
+        jLabel2.setText("Produto");
+
+        jLabel3.setText("Descrição");
+
+        jLabel4.setText("Valor");
+
+        jLabel5.setText("Quantidade");
+
+        jLabel6.setText("Grupo");
+
+        fId.setEditable(false);
+
+        cGrupo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(fId, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fValor, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fQnt, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fDescricao)
+                    .addComponent(fProduto, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(fId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(fProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(fDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(fValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(fQnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(cGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Consulta", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(0, 51, 255))); // NOI18N
+
+        jLabel7.setText("Filtro");
+
+        cOpcao.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Produto", "Descrição" }));
+
+        btFiltrar.setText("Filtrar");
+        btFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btFiltrarActionPerformed(evt);
+            }
+        });
+
+        tabela.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabela);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(fFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cOpcao, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel7)
+                        .addComponent(fFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cOpcao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btFiltrar))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        btNovo.setText("Novo");
+        btNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNovoActionPerformed(evt);
+            }
+        });
+
+        btAlterar.setText("Alterar");
+        btAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAlterarActionPerformed(evt);
+            }
+        });
+
+        btExcluir.setText("Excluir");
+        btExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btExcluirActionPerformed(evt);
+            }
+        });
+
+        btSalvar.setText("Salvar");
+        btSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalvarActionPerformed(evt);
+            }
+        });
+
+        btCancelar.setText("Cancelar");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
+
+        btSair.setText("Sair");
+        btSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSairActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btNovo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btAlterar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btSalvar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btCancelar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btSair)
+                        .addGap(31, 31, 31))))
+        );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btAlterar, btCancelar, btExcluir, btNovo, btSair, btSalvar});
+
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btNovo)
+                    .addComponent(btAlterar)
+                    .addComponent(btExcluir)
+                    .addComponent(btSalvar)
+                    .addComponent(btCancelar)
+                    .addComponent(btSair))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btAlterar, btCancelar, btExcluir, btNovo, btSair, btSalvar});
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
+
+        botoes("novo");
+        fProduto.setText("");
+        fQnt.setText("");
+        fValor.setText("");
+        fId.setText("");
+        cGrupo.setSelectedItem(null);
+        fDescricao.setText("");
+        fProduto.requestFocus();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btNovoActionPerformed
+
+    private void btAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btAlterarActionPerformed
+
+        if (objeto.getId() == null) {
+            JOptionPane.showMessageDialog(null, "Selecione um produto para ser alterado");
+        } else {
+            botoes("alterar");
+            fProduto.requestFocus();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btAlterarActionPerformed
+
+    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
+
+        if (objeto.getId() == null) {
+            JOptionPane.showMessageDialog(null, "Selecione um produto para ser excluido!");
+        } else {
+            Object[] options = {"Sim", "Não"};
+            int i = JOptionPane.showOptionDialog(null, "Tem certeza que deseja excluir este produto?",
+                    "Atenção!!!", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, options, options[0]);
+            if (i == JOptionPane.YES_OPTION) {
+                try {
+                    setObjeto(lista.get(tabela.getSelectedRow()));
+                    controle.excluir(objeto);
+                    montaTabela();
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "O produto não pode ser" + "excluido porque possui dependencias");
+                }
+            }
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btExcluirActionPerformed
+
+    private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+
+        if (verificaCampos() == true) {
+            objeto = new Produto();
+            objeto.setGrupo(grupos.get(cGrupo.getSelectedIndex()));
+            objeto.setNomeProduto(fProduto.getText());
+            objeto.setQntprod(Integer.parseInt(fQnt.getText()));
+            objeto.setDescricao(fDescricao.getText());
+            String val = fValor.getText().replace(".", "");
+            val = val.replace(",", ".");
+            objeto.setValor(new BigDecimal(val));
+            if(fId.getText().equals("")){
+            objeto.setId(null);
+            }else{
+            objeto.setId(Long.parseLong(fId.getText()));
+            }
+      controle.salvar(objeto);
+      botoes("salvar");
+      montaTabela();
+        } // TODO add your handling code here:
+    }//GEN-LAST:event_btSalvarActionPerformed
+
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+
+        botoes("cancelar");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btCancelarActionPerformed
+
+    private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
+
+        dispose();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btSairActionPerformed
+
+    private void tabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMouseClicked
+
+        setObjeto(lista.get(tabela.getSelectedRow()));
+        fId.setText(String.valueOf(objeto.getId()));
+        fProduto.setText(objeto.getNomeProduto());
+        fDescricao.setText(objeto.getDescricao());
+        fQnt.setText(String.valueOf(objeto.getQntprod()));
+        fValor.setText(String.valueOf(objeto.getValor()));
+        cGrupo.setSelectedItem(objeto.getGrupo().getNome());
+        botoes("selecionado");
+
+    if(evt.getClickCount() == 2){
+          if (objeto.getId() == null) {
+            JOptionPane.showMessageDialog(null, "Selecione um registro para alterar!");
+        } else {
+            botoes("alterar");
+            fProduto.requestFocus();
+        }
+
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelaMouseClicked
+
+    private void btFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFiltrarActionPerformed
+
+        montaTabela();
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btFiltrarActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new ProdutoTela().setVisible(true);
+            }
+        });
+    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAlterar;
+    private javax.swing.JButton btCancelar;
+    private javax.swing.JButton btExcluir;
+    private javax.swing.JButton btFiltrar;
+    private javax.swing.JButton btNovo;
+    private javax.swing.JButton btSair;
+    private javax.swing.JButton btSalvar;
+    private javax.swing.JComboBox cGrupo;
+    private javax.swing.JComboBox cOpcao;
+    private javax.swing.JTextField fDescricao;
+    private javax.swing.JTextField fFiltro;
+    private javax.swing.JTextField fId;
+    private javax.swing.JTextField fProduto;
+    private javax.swing.JTextField fQnt;
+    private util.JMoneyField fValor;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabela;
+    // End of variables declaration//GEN-END:variables
+ public void montaComboGrupo(){
+        grupos = gruControle.listaTodos();
+        cGrupo.removeAllItems();
+        for (Iterator<Grupo> it = grupos.iterator(); it.hasNext();) {
+            Grupo g = it.next();
+            cGrupo.addItem(g.getNome());
+        }
+    }
+
+
+}
